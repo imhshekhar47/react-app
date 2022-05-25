@@ -8,12 +8,12 @@ export const UserPage: React.FunctionComponent = () => {
             {
                 icon: <Key />,
                 lable: 'Token',
-                path: '/user/token',
+                path: '/app/user/token',
             },
             {
                 icon: <AccountCircle />,
                 lable: 'Profile',
-                path: '/user/profile',
+                path: '/app/user/profile',
             }
         ]} />
     )

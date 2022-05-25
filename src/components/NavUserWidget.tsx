@@ -1,10 +1,11 @@
 import {
     AccountCircle as AccountCircleIcon, Settings
 } from '@mui/icons-material';
-import { IconButton, Link, Menu, MenuItem } from '@mui/material';
+import { IconButton, Link, Menu, MenuItem, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { UserContext } from '../contexts';
 import { AppLinkProps } from './nav';
 
 const MenuLink: React.FunctionComponent<AppLinkProps> = ({ icon, lable, path }) => {
@@ -15,7 +16,9 @@ const MenuLink: React.FunctionComponent<AppLinkProps> = ({ icon, lable, path }) 
     )
 }
 
-export const NavUserProfile: React.FunctionComponent = () => {
+export const NavUserWidget: React.FunctionComponent = () => {
+    const userDetail = React.useContext(UserContext);
+
     const [menuAnchorEl, setMenuAnchorEl] = React.useState<Element | null>(null);
 
     const handleAccountMenu = (event: React.MouseEvent) => {
@@ -35,6 +38,7 @@ export const NavUserProfile: React.FunctionComponent = () => {
                 size='large'
             >
                 <AccountCircleIcon />
+                <Typography variant='body1' component="span">{ userDetail.username }</Typography>
             </IconButton>
             <Menu
                 id="account-menu"
@@ -56,7 +60,7 @@ export const NavUserProfile: React.FunctionComponent = () => {
                     alignItems: 'center',
                     padding: 2,
                 }}>
-                    <AccountCircleIcon fontSize='large' />
+                    <AccountCircleIcon fontSize='large' /> 
                 </Box>
                 <MenuLink icon={<Settings fontSize='small' />} lable='Account Setting' path='/user' />
             </Menu>

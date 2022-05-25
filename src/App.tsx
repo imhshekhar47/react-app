@@ -4,13 +4,14 @@ import React from 'react';
 import { ControlPanel } from './components';
 
 export const App: React.FunctionComponent = () => {
+
   return (
     <Container maxWidth={false} disableGutters>
       <ControlPanel title='React App'
         links={[
           {
             lable: "Dashboard",
-            path: "/dashboard",
+            path: "/app/dashboard",
             icon: <Dashboard />
           },
           {

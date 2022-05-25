@@ -2,14 +2,14 @@ import {
     ChevronLeft as ChevronLeftIcon,
     Menu as MenuIcon
 } from '@mui/icons-material';
-import { Box, CssBaseline, CSSObject, Divider, IconButton, Link, List, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar, Typography } from '@mui/material';
+import { Box, CssBaseline, CSSObject, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, styled, Theme, Toolbar, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
-import {Link as RouterLink} from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
+import { Link as RouterLink, Outlet } from 'react-router-dom';
+import { UserContext } from '../contexts';
 import { AppLinkProps } from './nav';
-import { NavUserProfile } from './NavUserPofileWidget';
+import { NavUserWidget } from './NavUserWidget';
 
 
 const Copyright: React.FunctionComponent = () => {
@@ -20,9 +20,9 @@ const Copyright: React.FunctionComponent = () => {
             mt: 8,
             backgroundColor: (theme) => theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
         }}>
-        <Typography variant='body2' sx={{ m: 4, textAlign: 'center' }}>
-            {'Copyright © '} {new Date().getFullYear()} by  Himanshu Shekhar 
-        </Typography>
+            <Typography variant='body2' sx={{ m: 4, textAlign: 'center' }}>
+                {'Copyright © '} {new Date().getFullYear()} by  Himanshu Shekhar
+            </Typography>
         </Box>
     )
 }
@@ -95,6 +95,7 @@ interface ControlPanelProps {
     links?: Array<AppLinkProps>,
 }
 export const ControlPanel: React.FunctionComponent<ControlPanelProps> = ({ title, links }) => {
+    const userDetails = React.useContext(UserContext);
 
     const [open, setOpen] = React.useState<boolean>(true);
 
@@ -106,8 +107,8 @@ export const ControlPanel: React.FunctionComponent<ControlPanelProps> = ({ title
         console.log(links);
         return (<List>
             {
-                links?.map((link, index) =>(<ListItemButton key={`app-link-${index}`} component={RouterLink} to={`${link.path}`}>
-                    { link.icon && <ListItemIcon>{ link.icon }</ListItemIcon>}
+                links?.map((link, index) => (<ListItemButton key={`app-link-${index}`} component={RouterLink} to={`${link.path}`}>
+                    {link.icon && <ListItemIcon>{link.icon}</ListItemIcon>}
                     <ListItemText>{link.lable}</ListItemText>
                 </ListItemButton>))
             }
@@ -139,9 +140,9 @@ export const ControlPanel: React.FunctionComponent<ControlPanelProps> = ({ title
                         }}>
                         {title}
                     </Typography>
-                    <div>
-                        <NavUserProfile />
-                    </div>
+                    {
+                        Boolean(userDetails.username) && <NavUserWidget />
+                    }
                 </Toolbar>
             </NavMenuBar>
             <NavDrawer variant='permanent' open={open}>
@@ -158,7 +159,7 @@ export const ControlPanel: React.FunctionComponent<ControlPanelProps> = ({ title
                     </IconButton>
                 </Toolbar>
                 <Divider />
-                { renderLinks()}
+                {renderLinks()}
             </NavDrawer>
             <Box component="main"
                 sx={{
@@ -170,7 +171,7 @@ export const ControlPanel: React.FunctionComponent<ControlPanelProps> = ({ title
                     <Outlet />
                     <Copyright />
                 </Box>
-                
+
             </Box>
         </Box>
     )

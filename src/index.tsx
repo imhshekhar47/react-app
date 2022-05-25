@@ -5,31 +5,40 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import theme from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AboutPage, DashboardPage, UserPage } from './pages';
+import { BrowserRouter, HashRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { AboutPage, DashboardPage, UserPage, WelcomePage } from './pages';
 import { UserProfile } from './components';
 import { UserToken } from './components/user/UserToken';
+import { defaultUserDetails, UserContext } from './contexts';
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <ThemeProvider theme={theme}>
-    <React.StrictMode>
-      <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<App />} >
-              <Route path="/dashboard" element={<DashboardPage />} />
+    <UserContext.Provider value={defaultUserDetails}>
+      <React.StrictMode>
+        <CssBaseline />
+        <HashRouter basename='/'>
+          <Routes>
+            <Route path="/" element={<Navigate to="/about" /> } />
+            <Route path="/" element={<WelcomePage />}>
               <Route path="/about" element={<AboutPage />} />
-              <Route path='/user' element={<UserPage />}>
-              <Route path='/user/token' element={<UserToken />} />
-              <Route path='/user/profile' element={<UserProfile />} />
+              <Route path='/app' element={<App />} >
+                <Route path="/app/dashboard" element={<DashboardPage />} />
+                <Route path='/app/user' element={<UserPage />}>
+                  <Route path='/app/user/token' element={<UserToken />} />
+                  <Route path='/app/user/profile' element={<UserProfile />} />
+                </Route>
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </React.StrictMode>
+          </Routes>
+        </HashRouter>
+      </React.StrictMode>
+    </UserContext.Provider>
   </ThemeProvider>
 );
 
